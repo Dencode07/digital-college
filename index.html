@@ -3,325 +3,2584 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Цифровой колледж</title>
+
 <style>
-*{box-sizing:border-box}
-:root{
-  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6d7688;
-  --line:#e5e9f0;--accent:#315efb;--accent2:#eef2ff;
-  --danger:#e5484d;--warning:#e7a21a;--success:#22945a;
-  --shadow:0 8px 25px rgba(30,45,80,.07)
+* {
+    box-sizing: border-box;
 }
-body.dark{--bg:#11151d;--card:#1a202b;--text:#f1f4fa;--muted:#9aa5b7;--line:#303846;--accent2:#252d48}
-body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0}
-.app{display:flex;min-height:100vh}
-.sidebar{width:255px;background:var(--card);border-right:1px solid var(--line);padding:18px;position:fixed;left:0;top:0;bottom:0;overflow:auto}
-.logo{font-size:20px;font-weight:800;margin:5px 8px 22px}
-.logo span{color:var(--accent)}
-.nav button{width:100%;text-align:left;padding:11px 12px;margin:3px 0;border-radius:10px;background:transparent;color:var(--text)}
-.nav button:hover,.nav button.active{background:var(--accent2);color:var(--accent)}
-.user-mini{border-top:1px solid var(--line);margin-top:18px;padding:15px 8px;color:var(--muted);font-size:13px}
-.main{margin-left:255px;width:calc(100% - 255px);padding:24px;max-width:1500px}
-.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px}
-.search{width:min(480px,100%);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text)}
-.actions{display:flex;gap:8px;align-items:center}
-.btn{padding:10px 14px;border-radius:10px;background:var(--accent);color:white;font-weight:600}
-.btn.secondary{background:var(--card);border:1px solid var(--line);color:var(--text)}
-.btn.danger{background:var(--danger)}
-.btn.small{padding:7px 10px;font-size:13px}
-h1{margin:0 0 5px;font-size:27px} h2{margin-top:0} h3{margin:0 0 8px}
-.muted{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}
-.stat strong{font-size:28px;display:block;margin-top:8px}
-.section{display:none}.section.active{display:block}
-.two{display:grid;grid-template-columns:1.4fr 1fr;gap:15px;margin-top:15px}
-.list{display:flex;flex-direction:column;gap:10px}
-.item{padding:13px;border:1px solid var(--line);border-radius:11px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:var(--accent2);color:var(--accent);font-size:12px}
-.priority{border-left:4px solid var(--danger)}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px}
-.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:15px;z-index:10}
-.modal{background:var(--card);width:min(600px,100%);max-height:90vh;overflow:auto;border-radius:16px;padding:20px}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
-.field input,.field select,.field textarea{padding:11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text)}
-.empty{text-align:center;padding:35px;color:var(--muted)}
-.toast{position:fixed;right:20px;bottom:20px;background:#202633;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:20}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{min-height:85px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px}.day b{font-size:12px}.event{font-size:11px;background:var(--accent2);color:var(--accent);padding:4px;border-radius:5px;margin-top:5px}
-.mobile-menu{display:none}
-@media(max-width:900px){
- .sidebar{display:none}.sidebar.open{display:block;z-index:15;width:270px}.main{margin-left:0;width:100%;padding:15px}
- .mobile-menu{display:block}.grid{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.top{align-items:flex-start}.form-grid{grid-template-columns:1fr}
+
+:root {
+    --bg: #f4f6fa;
+    --card: #ffffff;
+    --text: #172033;
+    --muted: #747d8f;
+    --border: #e4e8ef;
+    --blue: #3563e9;
+    --blue-light: #eef3ff;
+    --green: #20a464;
+    --orange: #e59b20;
+    --red: #df4d55;
+    --shadow: 0 8px 25px rgba(20, 35, 70, .07);
 }
-@media(max-width:560px){.grid{grid-template-columns:1fr}.actions .hide-mobile{display:none}h1{font-size:23px}}
+
+body.dark {
+    --bg: #11151d;
+    --card: #1b222d;
+    --text: #f3f5f8;
+    --muted: #9aa5b5;
+    --border: #303946;
+    --blue-light: #242d48;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.logo span {
+    color: var(--blue);
+}
+
+.nav button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 5px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: var(--blue-light);
+    color: var(--blue);
+}
+
+.user-box {
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+    padding-top: 15px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-role {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 250px;
+    padding: 25px;
+    max-width: 1500px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.page-title h1 {
+    margin: 0;
+    font-size: 27px;
+}
+
+.page-title p {
+    margin: 5px 0 0;
+    color: var(--muted);
+}
+
+.top-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.role-select {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    padding: 10px;
+    border-radius: 9px;
+}
+
+/* BUTTONS */
+
+.btn {
+    border: 0;
+    border-radius: 9px;
+    padding: 10px 14px;
+    background: var(--blue);
+    color: white;
+    font-weight: 600;
+}
+
+.btn.secondary {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn.red {
+    background: var(--red);
+}
+
+.btn.green {
+    background: var(--green);
+}
+
+.btn.small {
+    padding: 7px 10px;
+    font-size: 13px;
+}
+
+/* SECTIONS */
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* CARDS */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+}
+
+.stat-title {
+    color: var(--muted);
+}
+
+.stat-number {
+    font-size: 29px;
+    font-weight: 800;
+    margin-top: 8px;
+}
+
+.two-columns {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item {
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 13px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.item-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.badge {
+    display: inline-block;
+    background: var(--blue-light);
+    color: var(--blue);
+    border-radius: 20px;
+    padding: 5px 9px;
+    font-size: 12px;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 35px;
+}
+
+/* TABLE */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+/* CALENDAR */
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    min-height: 90px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.calendar-event {
+    margin-top: 6px;
+    padding: 5px;
+    background: var(--blue-light);
+    color: var(--blue);
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+/* MODAL */
+
+.modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    z-index: 100;
+}
+
+.modal-bg.show {
+    display: flex;
+}
+
+.modal {
+    width: min(600px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field.full {
+    grid-column: 1 / -1;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* MOBILE */
+
+.mobile-menu {
+    display: none;
+}
+
+@media(max-width: 900px) {
+
+    .sidebar {
+        display: none;
+        z-index: 200;
+    }
+
+    .sidebar.open {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .two-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .top-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field.full {
+        grid-column: auto;
+    }
+
+    .calendar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
+<!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
-  <div class="logo">Цифровой <span>колледж</span></div>
-  <nav class="nav">
-    <button class="active" data-page="dashboard">🏠 Главная</button>
-    <button data-page="notifications">🔔 Уведомления</button>
-    <button data-page="employees">👥 Сотрудники</button>
-    <button data-page="tasks">✅ Задачи</button>
-    <button data-page="groups">🎓 Группы</button>
-    <button data-page="calendar">📅 Календарь</button>
-    <button data-page="schedule">🗓 Расписание</button>
-    <button data-page="surveys">📋 Опросы</button>
-    <button data-page="statistics">📊 Статистика</button>
-    <button data-page="certificates">📄 Справки</button>
-    <button data-page="settings">⚙️ Настройки</button>
-  </nav>
-  <div class="user-mini">
-    <b id="sideUser">Администратор</b><br>
-    <span id="sideRole">Администратор</span>
-  </div>
+
+    <div class="logo">
+        Цифровой <span>колледж</span>
+    </div>
+
+    <nav class="nav">
+
+        <button class="active" data-page="dashboard">
+            🏠 Главная
+        </button>
+
+        <button data-page="notifications">
+            🔔  Уведомления
+        </button>
+
+        <button data-page="employees" data-roles="admin">
+            👥  Сотрудники
+        </button>
+
+        <button data-page="tasks">
+            ✅ Задачи
+        </button>
+
+        <button data-page="groups" data-roles="admin,teacher">
+            🎓 Группы
+        </button>
+
+        <button data-page="calendar">
+            📅  Мероприятия
+        </button>
+
+        <button data-page="schedule">
+            🗓 Расписание
+        </button>
+
+        <button data-page="surveys">
+            📋 Опросы
+        </button>
+
+        <button data-page="statistics" data-roles="admin">
+            📊  Статистика
+        </button>
+
+        <button data-page="certificates">
+            📄  Справки
+        </button>
+
+        <button data-page="settings" data-roles="admin">
+            ⚙️  Настройки
+        </button>
+
+    </nav>
+
+    <div class="user-box">
+
+        <div class="user-name" id="sideName">
+            Администратор
+        </div>
+
+        <div class="user-role" id="sideRole">
+            Администратор
+        </div>
+
+    </div>
+
 </aside>
 
+
+<!-- MAIN -->
+
 <main class="main">
-<header class="top">
-  <div>
-    <button class="btn secondary mobile-menu" onclick="toggleSidebar()">☰</button>
-    <h1 id="pageTitle">Главная</h1>
-    <div class="muted" id="welcome">Рабочее пространство колледжа</div>
-  </div>
-  <div class="actions">
-    <input class="search" id="globalSearch" placeholder="Поиск по системе...">
-    <button class="btn secondary hide-mobile" onclick="toggleDark()">◐</button>
-    <button class="btn" onclick="openAccount()">Аккаунт</button>
-  </div>
-</header>
 
-<section id="dashboard" class="section active">
-  <div class="grid">
-    <div class="card stat"><span class="muted">Активные задачи</span><strong id="sTasks">0</strong></div>
-    <div class="card stat"><span class="muted">Уведомления</span><strong id="sNotices">0</strong></div>
-    <div class="card stat"><span class="muted">Сотрудники</span><strong id="sEmployees">0</strong></div>
-    <div class="card stat"><span class="muted">Заявки на справки</span><strong id="sRequests">0</strong></div>
-  </div>
-  <div class="two">
-    <div class="card"><h2>Что происходит</h2><div id="dashboardFeed" class="list"></div></div>
-    <div class="card"><h2>Быстрые действия</h2>
-      <div class="list">
-        <button class="btn" onclick="openModal('notice')">+ Создать уведомление</button>
-        <button class="btn secondary" onclick="openModal('task')">+ Добавить задачу</button>
-        <button class="btn secondary" onclick="openModal('employee')">+ Добавить сотрудника</button>
-        <button class="btn secondary" onclick="openModal('event')">+ Добавить мероприятие</button>
-      </div>
-    </div>
-  </div>
-</section>
+    <header class="topbar">
 
-<section id="notifications" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Уведомления</h2><span class="muted">Здесь можно менять текст, получателей и тип сообщения.</span></div><button class="btn" onclick="openModal('notice')">+ Добавить</button></div><div id="noticeList" class="list" style="margin-top:15px"></div></div>
-</section>
+        <div class="page-title">
 
-<section id="employees" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Сотрудники</h2><span class="muted">Карточки сотрудников можно редактировать.</span></div><button class="btn" onclick="openModal('employee')">+ Сотрудник</button></div><div id="employeeList" class="list" style="margin-top:15px"></div></div>
-</section>
+            <button
+                class="btn secondary mobile-menu"
+                onclick="toggleSidebar()">
+                ☰
+21:36
+</button>
 
-<section id="tasks" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Задачи</h2><span class="muted">Приоритет, срок и напоминание задаются вручную.</span></div><button class="btn" onclick="openModal('task')">+ Задача</button></div><div id="taskList" class="list" style="margin-top:15px"></div></div>
-</section>
+            <h1 id="pageTitle">
+                Главная
+            </h1>
 
-<section id="groups" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Карточки групп</h2><span class="muted">Состав группы и роли можно менять.</span></div><button class="btn" onclick="openModal('group')">+ Группа</button></div><div id="groupList" class="list" style="margin-top:15px"></div></div>
-</section>
+            <p id="pageDescription">
+                Рабочее пространство колледжа
+            </p>
 
-<section id="calendar" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Календарь мероприятий</h2><span class="muted">Добавляйте и удаляйте события под свои правила.</span></div><button class="btn" onclick="openModal('event')">+ Мероприятие</button></div><div id="calendarBox" style="margin-top:15px"></div></div>
-</section>
+        </div>
 
-<section id="schedule" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Общее расписание</h2><span class="muted">Расписание — обычные данные, их можно редактировать.</span></div><button class="btn" onclick="openModal('lesson')">+ Пара</button></div><div id="scheduleList" style="margin-top:15px"></div></div>
-</section>
+        <div class="top-actions">
 
-<section id="surveys" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Опросы</h2><span class="muted">Статус прохождения и напоминания.</span></div><button class="btn" onclick="openModal('survey')">+ Опрос</button></div><div id="surveyList" class="list" style="margin-top:15px"></div></div>
-</section>
+            <select
+                id="roleSelect"
+                class="role-select"
+                onchange="changeRole(this.value)">
 
-<section id="statistics" class="section">
- <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Статистика болеющих</h2><span class="muted">Значения можно менять каждый день.</span></div><button class="btn" onclick="openModal('stats')">Изменить</button></div><div id="statsBox" style="margin-top:15px"></div></div>
-</section>
+                <option value="admin">
+                    👑  Администратор
+                </option>
 
-<section id="certificates" class="section">
- <div class="card"><h2>Заявки на справки</h2><p class="muted">Ссылки на формы также можно заменить в настройках.</p>
- <div class="grid">
-   <button class="card" onclick="openLink('study')"><h3>📄 Справка об обучении</h3><span class="muted">Открыть форму</span></button>
-   <button class="card" onclick="openLink('stipend')"><h3>💳 Справка о стипендии</h3><span class="muted">Открыть форму</span></button>
- </div></div>
-</section>
+                <option value="teacher">
+                    👨‍🏫  Преподаватель
+                </option>
 
-<section id="settings" class="section">
- <div class="card"><h2>Настройки системы</h2><p class="muted">Главная идея этого прототипа — ничего не зашивать намертво. Основные данные хранятся в браузере и могут быть изменены.</p>
- <div class="form-grid">
-  <div class="field"><label>Название колледжа</label><input id="setCollege"></div>
-  <div class="field"><label>Имя администратора</label><input id="setAdmin"></div>
-  <div class="field full"><label>Ссылка на справку об обучении</label><input id="setStudy"></div>
-  <div class="field full"><label>Ссылка на справку о стипендии</label><input id="setStipend"></div>
- </div>
- <div style="margin-top:15px" class="actions"><button class="btn" onclick="saveSettings()">Сохранить изменения</button><button class="btn danger" onclick="resetData()">Сбросить демо-данные</button></div>
- </div>
-</section>
+                <option value="student">
+                    🎓 Студент
+                </option>
+
+            </select>
+
+            <button
+                class="btn secondary"
+                onclick="toggleDarkMode()">
+                ◐
+            </button>
+
+            <button
+                class="btn"
+                onclick="openProfile()">
+                Мой аккаунт
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- DASHBOARD -->
+
+    <section
+        class="page active"
+        id="dashboard">
+
+        <div
+            class="card"
+            style="margin-bottom:15px">
+
+            <h2 id="roleTitle">
+                Режим администратора
+            </h2>
+
+            <p
+                class="muted"
+                id="roleText">
+                Полный доступ ко всем разделам системы.
+            </p>
+
+        </div>
+
+
+        <div class="grid">
+
+            <div class="card">
+
+                <div class="stat-title">
+                    Задачи
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="statTasks">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="stat-title">
+                    Уведомления
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="statNotifications">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="stat-title">
+                    Расписание
+                </div>
+
+                <div
+                    class="stat-number">
+                    6
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="stat-title">
+                    Опросы
+                </div>
+
+                <div
+                    class="stat-number">
+                    2
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="two-columns">
+
+            <div class="card">
+
+                <h2>
+                    Сегодня
+                </h2>
+
+                <div
+                    class="list"
+                    id="dashboardList">
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    Быстрые действия
+                </h2>
+
+                <div
+                    class="list"
+                    id="quickActions">
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NOTIFICATIONS -->
+
+    <section
+        class="page"
+        id="notifications">
+
+        <div class="card">
+
+            <div class="item">
+
+                <div>
+                    <h2>Уведомления</h2>
+
+                    <p class="muted">
+                        Информация для участников образовательного процесса.
+                    </p>
+                </div>
+
+                <button
+                    class="btn admin-only"
+                    onclick="addNotification()">
+                    + Создать
+                </button>
+
+            </div>
+
+            <div
+                class="list"
+                id="notificationsList">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EMPLOYEES -->
+
+    <section
+        class="page"
+        id="employees">
+
+        <div class="card">
+21:36
+<div class="item">
+
+                <div>
+
+                    <h2>
+                        Сотрудники
+                    </h2>
+
+                    <p class="muted">
+                        Справочник сотрудников колледжа.
+                    </p>
+
+                </div>
+
+                <button
+                    class="btn admin-only"
+                    onclick="addEmployee()">
+                    + Сотрудник
+                </button>
+
+            </div>
+
+            <div
+                class="list"
+                id="employeesList">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TASKS -->
+
+    <section
+        class="page"
+        id="tasks">
+
+        <div class="card">
+
+            <div class="item">
+
+                <div>
+
+                    <h2>
+                        Мои задачи
+                    </h2>
+
+                    <p class="muted">
+                        Задачи и напоминания.
+                    </p>
+
+                </div>
+
+                <button
+                    class="btn"
+                    onclick="addTask()">
+                    + Задача
+                </button>
+
+            </div>
+
+            <div
+                class="list"
+                id="tasksList">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GROUPS -->
+
+    <section
+        class="page"
+        id="groups">
+
+        <div class="card">
+
+            <h2>
+                Группы
+            </h2>
+
+            <div
+                class="list"
+                id="groupsList">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CALENDAR -->
+
+    <section
+        class="page"
+        id="calendar">
+
+        <div class="card">
+
+            <div class="item">
+
+                <div>
+
+                    <h2>
+                        Календарь мероприятий
+                    </h2>
+
+                    <p class="muted">
+                        Мероприятия колледжа.
+                    </p>
+
+                </div>
+
+                <button
+                    class="btn"
+                    onclick="addEvent()">
+                    + Мероприятие
+                </button>
+
+            </div>
+
+            <div
+                class="calendar"
+                id="calendarBox">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SCHEDULE -->
+
+    <section
+        class="page"
+        id="schedule">
+
+        <div class="card">
+
+            <h2>
+                Общее расписание
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Время</th>
+                            <th>Предмет</th>
+                            <th>Преподаватель</th>
+                            <th>Группа</th>
+                            <th>Кабинет</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="scheduleList">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SURVEYS -->
+
+    <section
+        class="page"
+        id="surveys">
+
+        <div class="card">
+
+            <h2>
+                Опросы
+            </h2>
+
+            <div
+                class="list"
+                id="surveysList">
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section
+        class="page"
+        id="statistics">
+
+        <div class="grid">
+
+            <div class="card">
+
+                <span class="muted">
+                    ОРВИ
+                </span>
+
+                <div
+                    class="stat-number">
+                    39
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <span class="muted">
+                    Пневмония
+                </span>
+
+                <div
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="card">
+21:36
+<span class="muted">
+                    COVID-19
+                </span>
+
+                <div
+                    class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <span class="muted">
+                    Всего
+                </span>
+
+                <div
+                    class="stat-number">
+                    39
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CERTIFICATES -->
+
+    <section
+        class="page"
+        id="certificates">
+
+        <div class="grid">
+
+            <div
+                class="card"
+                onclick="showMessage('Открываем форму справки об обучении')">
+
+                <h2>
+                    📄 
+                </h2>
+
+                <h3>
+                    Справка об обучении
+                </h3>
+
+                <p class="muted">
+                    Подать заявку
+                </p>
+
+            </div>
+
+
+            <div
+                class="card"
+                onclick="showMessage('Открываем форму справки о стипендии')">
+
+                <h2>
+                    💳
+                </h2>
+
+                <h3>
+                    Справка о стипендии
+                </h3>
+
+                <p class="muted">
+                    Подать заявку
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <section
+        class="page"
+        id="settings">
+
+        <div class="card">
+
+            <h2>
+                Настройки
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        Название колледжа
+                    </label>
+
+                    <input
+                        id="collegeName"
+                        value="Цифровой колледж">
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Имя администратора
+                    </label>
+
+                    <input
+                        id="adminName"
+                        value="Администратор">
+
+                </div>
+
+            </div>
+
+            <br>
+
+            <button
+                class="btn"
+                onclick="saveSettings()">
+                Сохранить
+            </button>
+
+        </div>
+
+    </section>
+
 </main>
+
 </div>
 
-<div class="modal-wrap" id="modal">
- <div class="modal">
-  <div class="modal-head"><h2 id="modalTitle">Добавить</h2><button class="btn secondary" onclick="closeModal()">✕</button></div>
-  <form id="modalForm"></form>
- </div>
+
+<!-- MODAL -->
+
+<div
+    class="modal-bg"
+    id="modal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Аккаунт
+            </h2>
+
+            <button
+                class="btn secondary"
+                onclick="closeModal()">
+                ✕
+            </button>
+
+        </div>
+
+        <div id="modalContent">
+        </div>
+
+    </div>
+
 </div>
-<div class="toast" id="toast"></div>
+
 
 <script>
-const KEY='collegeAppDataV2';
-let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
- college:'Цифровой колледж',
- admin:{name:'Администратор',role:'Администратор'},
- notices:[
-  {id:1,title:'Важная информация',text:'Завтра изменяется время первой пары.',type:'Важное',date:'23.09.2026'},
-  {id:2,title:'Собрание',text:'Совещание кураторов в 15:00.',type:'Встреча',date:'23.09.2026'}
- ],
- employees:[
-  {id:1,name:'Анна Петрова',role:'Методист',subject:'Организация учебного процесса',contact:'anna@example.ru',office:'Кабинет 204'},
-  {id:2,name:'Иван Смирнов',role:'Преподаватель',subject:'Информатика',contact:'ivan@example.ru',office:'Кабинет 310'}
- ],
- tasks:[
-  {id:1,title:'Подготовить отчёт',priority:'Высокий',due:'30.09.2026',reminder:'За день'},
-  {id:2,title:'Провести собрание',priority:'Средний',due:'25.09.2026',reminder:'За 15 минут'}
- ],
- groups:[{id:1,name:'ИС-21',curator:'Анна Петрова',starosta:'Максим Иванов',deputy:'Ольга Соколова',committee:'Учебный сектор'}],
- events:[{id:1,title:'День открытых дверей',date:'2026-09-28',category:'Колледж',participants:'Абитуриенты, сотрудники'}],
- lessons:[
-  {id:1,date:'23.09.2026',time:'09:00',subject:'Информатика',teacher:'Иван Смирнов',group:'ИС-21',room:'310'},
-  {id:2,date:'23.09.2026',time:'10:45',subject:'Математика',teacher:'Елена Орлова',group:'ИС-21',room:'205'}
- ],
- surveys:[{id:1,title:'Опрос удовлетворённости',deadline:'27.09.2026',passed:18,total:25}],
- stats:{date:'23.09.2026',arvi:39,pneumonia:0,covid:0},
- links:{study:'#',stipend:'#'}
-};
-save();
 
-function save(){localStorage.setItem(KEY,JSON.stringify(data))}
-function $(id){return document.getElementById(id)}
-function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
-function render(){
- $('sideUser').textContent=data.admin.name;$('sideRole').textContent=data.admin.role;
- $('welcome').textContent=data.college+' · '+data.admin.role;
- $('sTasks').textContent=data.tasks.length;$('sNotices').textContent=data.notices.length;$('sEmployees').textContent=data.employees.length;
- $('sRequests').textContent='2';
- renderNotices();renderEmployees();renderTasks();renderGroups();renderCalendar();renderSchedule();renderSurveys();renderStats();renderFeed();fillSettings()
-}
-function renderFeed(){
- $('dashboardFeed').innerHTML=data.notices.slice(0,4).map(n=>`<div class="item"><div><b>${esc(n.title)}</b><div class="muted">${esc(n.text)}</div></div><span class="badge">${esc(n.type)}</span></div>`).join('')||'<div class="empty">Пока ничего нет</div>'
-}
-function renderNotices(){
- $('noticeList').innerHTML=data.notices.map(n=>`<div class="item"><div><b>${esc(n.title)}</b><div>${esc(n.text)}</div><small class="muted">${esc(n.type)} · ${esc(n.date)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('notice',${n.id})">Изменить</button><button class="btn small danger" onclick="del('notices',${n.id})">Удалить</button></div></div>`).join('')||'<div class="empty">Нет уведомлений</div>'
-}
-function renderEmployees(){
- $('employeeList').innerHTML=data.employees.map(e=>`<div class="item"><div><b>${esc(e.name)}</b><div>${esc(e.role)} · ${esc(e.subject)}</div><small class="muted">${esc(e.contact)} · ${esc(e.office)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('employee',${e.id})">Изменить</button><button class="btn small danger" onclick="del('employees',${e.id})">Удалить</button></div></div>`).join('')
-}
-function renderTasks(){
- $('taskList').innerHTML=data.tasks.map(t=>`<div class="item ${t.priority==='Высокий'?'priority':''}"><div><b>${esc(t.title)}</b><div><span class="badge">${esc(t.priority)}</span> · до ${esc(t.due)}</div><small class="muted">Напоминание: ${esc(t.reminder)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('task',${t.id})">Изменить</button><button class="btn small danger" onclick="del('tasks',${t.id})">Удалить</button></div></div>`).join('')
-}
-function renderGroups(){
- $('groupList').innerHTML=data.groups.map(g=>`<div class="item"><div><h3>${esc(g.name)}</h3><div>Куратор: ${esc(g.curator)}</div><div>Староста: ${esc(g.starosta)} · Зам.: ${esc(g.deputy)}</div><small class="muted">${esc(g.committee)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('group',${g.id})">Изменить</button><button class="btn small danger" onclick="del('groups',${g.id})">Удалить</button></div></div>`).join('')
-}
-function renderCalendar(){
- let days=Array.from({length:30},(_,i)=>i+1);
- $('calendarBox').innerHTML='<div class="calendar">'+days.map(d=>{let date=`2026-09-${String(d).padStart(2,'0')}`;let ev=data.events.filter(e=>e.date===date);return `<div class="day"><b>${d}</b>${ev.map(e=>`<div class="event" onclick="editItem('event',${e.id})">${esc(e.title)}</div>`).join('')}</div>`}).join('')+'</div>'
-}
-function renderSchedule(){
- $('scheduleList').innerHTML='<table><thead><tr><th>Дата</th><th>Время</th><th>Предмет</th><th>Преподаватель</th><th>Группа</th><th>Кабинет</th><th></th></tr></thead><tbody>'+
- data.lessons.map(l=>`<tr><td>${esc(l.date)}</td><td>${esc(l.time)}</td><td>${esc(l.subject)}</td><td>${esc(l.teacher)}</td><td>${esc(l.group)}</td><td>${esc(l.room)}</td><td><button class="btn small secondary" onclick="editItem('lesson',${l.id})">Изм.</button> <button class="btn small danger" onclick="del('lessons',${l.id})">×</button></td></tr>`).join('')+'</tbody></table>'
-}
-function renderSurveys(){
- $('surveyList').innerHTML=data.surveys.map(s=>`<div class="item"><div><b>${esc(s.title)}</b><div>Срок: ${esc(s.deadline)}</div><small class="muted">Прошли: ${s.passed} из ${s.total}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('survey',${s.id})">Изменить</button><button class="btn small danger" onclick="del('surveys',${s.id})">Удалить</button></div></div>`).join('')
-}
-function renderStats(){
- let total=+data.stats.arvi + +data.stats.pneumonia + +data.stats.covid;
- $('statsBox').innerHTML=`<div class="grid"><div class="card"><span class="muted">Дата</span><strong>${esc(data.stats.date)}</strong></div><div class="card"><span class="muted">ОРВИ</span><strong>${data.stats.arvi}</strong></div><div class="card"><span class="muted">Пневмония</span><strong>${data.stats.pneumonia}</strong></div><div class="card"><span class="muted">COVID-19</span><strong>${data.stats.covid}</strong></div></div><div class="card" style="margin-top:15px"><b>Всего: ${total}</b></div>`
-}
-function fillSettings(){
- $('setCollege').value=data.college;$('setAdmin').value=data.admin.name;$('setStudy').value=data.links.study;$('setStipend').value=data.links.stipend
-}
-const titles={dashboard:'Главная',notifications:'Уведомления',employees:'Сотрудники',tasks:'Задачи',groups:'Группы',calendar:'Календарь',schedule:'Расписание',surveys:'Опросы',statistics:'Статистика',certificates:'Справки',settings:'Настройки'};
-document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
-function showPage(p){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$(p).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));$('pageTitle').textContent=titles[p];$('sidebar').classList.remove('open')}
-function toggleSidebar(){$('sidebar').classList.toggle('open')}
-function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('dark',document.body.classList.contains('dark'))}
-if(localStorage.getItem('dark')==='true')document.body.classList.add('dark');
+/* =====================================================
+   ДАННЫЕ
+===================================================== */
 
-const fields={
-notice:{title:'Новое уведомление',arr:'notices',labels:{title:'Заголовок',text:'Текст',type:'Тип',date:'Дата'},inputs:{title:'text',text:'textarea',type:'text',date:'text'}},
-employee:{title:'Сотрудник',arr:'employees',labels:{name:'ФИО',role:'Должность',subject:'Предмет / направление',contact:'Контакт',office:'Кабинет'},inputs:{name:'text',role:'text',subject:'text',contact:'text',office:'text'}},
-task:{title:'Задача',arr:'tasks',labels:{title:'Название',priority:'Приоритет',due:'Срок',reminder:'Напоминание'},inputs:{title:'text',priority:'select:Низкий|Средний|Высокий|Срочный',due:'text',reminder:'text'}},
-group:{title:'Группа',arr:'groups',labels:{name:'Название группы',curator:'Куратор',starosta:'Староста',deputy:'Заместитель',committee:'Актив / комитеты'},inputs:{name:'text',curator:'text',starosta:'text',deputy:'text',committee:'text'}},
-event:{title:'Мероприятие',arr:'events',labels:{title:'Название',date:'Дата',category:'Категория',participants:'Участники'},inputs:{title:'text',date:'date',category:'text',participants:'text'}},
-lesson:{title:'Занятие',arr:'lessons',labels:{date:'Дата',time:'Время',subject:'Предмет',teacher:'Преподаватель',group:'Группа',room:'Кабинет'},inputs:{date:'text',time:'text',subject:'text',teacher:'text',group:'text',room:'text'}},
-survey:{title:'Опрос',arr:'surveys',labels:{title:'Название',deadline:'Срок',passed:'Прошли',total:'Всего'},inputs:{title:'text',deadline:'text',passed:'number',total:'number'}},
-stats:{title:'Статистика',special:'stats',labels:{date:'Дата',arvi:'ОРВИ',pneumonia:'Пневмония',covid:'COVID-19'},inputs:{date:'text',arvi:'number',pneumonia:'number',covid:'number'}}
+const data = {
+
+    notifications: [
+
+        {
+            title: "Важное объявление",
+            text: "Завтра изменяется расписание первой пары.",
+            type: "Важное"
+        },
+
+        {
+            title: "Собрание",
+            text: "Совещание кураторов состоится в 15:00.",
+            type: "Встреча"
+        }
+
+    ],
+
+
+    employees: [
+
+        {
+            name: "Иван Смирнов",
+            role: "Преподаватель",
+            subject: "Информатика",
+            office: "Кабинет 310"
+        },
+
+        {
+            name: "Анна Петрова",
+            role: "Методист",
+            subject: "Организация учебного процесса",
+            office: "Кабинет 204"
+        },
+
+        {
+            name: "Елена Орлова",
+            role: "Преподаватель",
+            subject: "Математика",
+            office: "Кабинет 205"
+        }
+
+    ],
+
+
+    tasks: [
+
+        {
+            title: "Подготовить материалы к занятию",
+            priority: "Высокий",
+            deadline: "Сегодня"
+        },
+
+        {
+
+title: "Проверить работы студентов",
+            priority: "Средний",
+            deadline: "Завтра"
+        }
+
+    ],
+
+
+    groups: [
+
+        {
+            name: "ИС-21",
+            curator: "Анна Петрова",
+            starosta: "Максим Иванов",
+            students: 24
+        },
+
+        {
+            name: "ПР-22",
+            curator: "Иван Смирнов",
+            starosta: "Ольга Соколова",
+            students: 22
+        }
+
+    ],
+
+
+    schedule: [
+
+        {
+            time: "09:00",
+            subject: "Информатика",
+            teacher: "Иван Смирнов",
+            group: "ИС-21",
+            room: "310"
+        },
+
+        {
+            time: "10:45",
+            subject: "Математика",
+            teacher: "Елена Орлова",
+            group: "ИС-21",
+            room: "205"
+        },
+
+        {
+            time: "12:30",
+            subject: "Программирование",
+            teacher: "Иван Смирнов",
+            group: "ПР-22",
+            room: "312"
+        }
+
+    ],
+
+
+    surveys: [
+
+        {
+            title: "Опрос удовлетворённости",
+            deadline: "27.09.2026",
+            passed: 18,
+            total: 25
+        },
+
+        {
+            title: "Опрос по расписанию",
+            deadline: "30.09.2026",
+            passed: 20,
+            total: 25
+        }
+
+    ],
+
+
+    events: [
+
+        {
+            day: 23,
+            title: "Совещание"
+        },
+
+        {
+            day: 28,
+            title: "День открытых дверей"
+        }
+
+    ]
+
 };
-let editState=null;
-function openModal(type,id=null){
- editState={type,id};
- let f=fields[type];$('modalTitle').textContent=id?'Изменить':'Добавить';
- if(f.special==='stats') editState.obj=data.stats;
- else editState.obj=id?data[f.arr].find(x=>x.id===id):{};
- let html='<div class="form-grid">';
- Object.keys(f.labels).forEach(k=>{
-  let val=editState.obj[k]??'';
-  let inp=f.inputs[k];
-  html+=`<div class="field ${inp==='textarea'?'full':''}"><label>${f.labels[k]}</label>`;
-  if(inp==='textarea')html+=`<textarea name="${k}" rows="5">${esc(val)}</textarea>`;
-  else if(inp.startsWith('select:'))html+=`<select name="${k}">${inp.slice(7).split('|').map(x=>`<option ${x===val?'selected':''}>${x}</option>`).join('')}</select>`;
-  else html+=`<input name="${k}" type="${inp}" value="${esc(val)}">`;
-  html+='</div>';
- });
- html+=`</div><div style="margin-top:15px;text-align:right"><button type="button" class="btn secondary" onclick="closeModal()">Отмена</button> <button class="btn">Сохранить</button></div>`;
- $('modalForm').innerHTML=html;$('modal').style.display='flex';
- $('modalForm').onsubmit=e=>{e.preventDefault();saveModal(type)}
-}
-function saveModal(type){
- let f=fields[type], obj=editState.obj, fd=new FormData($('modalForm'));
- Object.keys(f.labels).forEach(k=>obj[k]=fd.get(k));
- if(type==='stats'){data.stats=obj}else{
-  if(!editState.id){obj.id=Date.now();data[f.arr].push(obj)}
- }
- save();render();closeModal();toast('Изменения сохранены');
-}
-function closeModal(){$('modal').style.display='none'}
-function editItem(type,id){openModal(type,id)}
-function del(arr,id){if(confirm('Удалить эту запись?')){data[arr]=data[arr].filter(x=>x.id!==id);save();render();toast('Удалено')}}
-function openAccount(){
- editState={type:'account',id:null,obj:{name:data.admin.name,role:data.admin.role}};
- $('modalTitle').textContent='Мой аккаунт';
- $('modalForm').innerHTML=`<div class="form-grid">
- <div class="field"><label>Имя</label><input name="name" value="${esc(data.admin.name)}"></div>
- <div class="field"><label>Роль</label><input name="role" value="${esc(data.admin.role)}"></div>
- </div><div style="margin-top:15px;text-align:right"><button type="button" class="btn secondary" onclick="closeModal()">Отмена</button> <button class="btn">Сохранить</button></div>`;
- $('modal').style.display='flex';
- $('modalForm').onsubmit=e=>{e.preventDefault();let fd=new FormData($('modalForm'));data.admin.name=fd.get('name')||'Администратор';data.admin.role=fd.get('role')||'Администратор';save();render();closeModal();toast('Аккаунт обновлён')};
-}
-function saveSettings(){
- data.college=$('setCollege').value.trim()||'Цифровой колледж';data.admin.name=$('setAdmin').value.trim()||'Администратор';data.links.study=$('setStudy').value.trim()||'#';data.links.stipend=$('setStipend').value.trim()||'#';save();render();toast('Настройки сохранены')
-}
-function openLink(type){let u=data.links[type];if(u&&u!=='#')window.open(u,'_blank');else toast('Сначала укажите ссылку в настройках')}
-function resetData(){if(confirm('Вернуть исходные демонстрационные данные?')){localStorage.removeItem(KEY);location.reload()}}
-$('globalSearch').addEventListener('input',e=>{
- let q=e.target.value.toLowerCase().trim();if(!q)return;
- let all=[...data.employees.map(x=>x.name+' '+x.role),...data.tasks.map(x=>x.title),...data.notices.map(x=>x.title+' '+x.text)];
- let found=all.filter(x=>x.toLowerCase().includes(q)).length;toast(found?`Найдено совпадений: ${found}`:'Ничего не найдено')
+
+
+/* =====================================================
+   РОЛИ
+===================================================== */
+
+const roles = {
+
+    admin: {
+
+        name: "Администратор",
+
+        person: "Администратор",
+
+        title: "Режим администратора",
+
+        description:
+            "Полный доступ к системе колледжа.",
+
+        pages: [
+            "dashboard",
+            "notifications",
+            "employees",
+            "tasks",
+            "groups",
+            "calendar",
+            "schedule",
+            "surveys",
+            "statistics",
+            "certificates",
+            "settings"
+        ]
+
+    },
+
+
+    teacher: {
+
+        name: "Преподаватель",
+
+        person: "Иван Смирнов",
+
+        title: "Режим преподавателя",
+
+        description:
+            "Расписание, группы, задачи, уведомления и мероприятия преподавателя.",
+
+        pages: [
+            "dashboard",
+            "notifications",
+            "tasks",
+            "groups",
+            "calendar",
+            "schedule",
+            "surveys",
+            "certificates"
+        ]
+
+    },
+
+
+    student: {
+
+        name: "Студент",
+
+        person: "Алексей Иванов",
+
+        title: "Режим студента",
+
+        description:
+            "Расписание, уведомления, мероприятия, опросы и заявки на справки.",
+
+        pages: [
+            "dashboard",
+            "notifications",
+            "tasks",
+            "calendar",
+            "schedule",
+            "surveys",
+            "certificates"
+        ]
+
+    }
+
+};
+
+
+let currentRole = "admin";
+
+
+/* =====================================================
+   НАВИГАЦИЯ
+===================================================== */
+
+const pageNames = {
+
+    dashboard: "Главная",
+
+    notifications: "Уведомления",
+
+    employees: "Сотрудники",
+
+    tasks: "Задачи",
+
+    groups: "Группы",
+
+    calendar: "Мероприятия",
+
+    schedule: "Расписание",
+
+    surveys: "Опросы",
+
+    statistics: "Статистика",
+
+    certificates: "Справки",
+
+    settings: "Настройки"
+
+};
+
+
+document
+.querySelectorAll(".nav button")
+.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        showPage(button.dataset.page);
+
+    });
+
 });
 
-render();
+
+function showPage(page) {
+
+    document
+    .querySelectorAll(".page")
+    .forEach(section => {
+
+        section.classList.remove("active");
+
+    });
+
+
+    const element = document.getElementById(page);
+
+    if (!element) return;
+
+
+    element.classList.add("active");
+
+
+    document
+
+.querySelectorAll(".nav button")
+    .forEach(button => {
+
+        button.classList.toggle(
+            "active",
+            button.dataset.page === page
+        );
+
+    });
+
+
+    document.getElementById("pageTitle").textContent =
+        pageNames[page];
+
+
+    document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+}
+
+
+/* =====================================================
+   ПЕРЕКЛЮЧЕНИЕ РОЛЕЙ
+===================================================== */
+
+function changeRole(role) {
+
+    currentRole = role;
+
+    const user = roles[role];
+
+
+    document.getElementById("sideName").textContent =
+        user.person;
+
+
+    document.getElementById("sideRole").textContent =
+        user.name;
+
+
+    document.getElementById("roleTitle").textContent =
+        user.title;
+
+
+    document.getElementById("roleText").textContent =
+        user.description;
+
+
+    document.getElementById("pageDescription").textContent =
+        user.name + " · " + user.description;
+
+
+    /*
+       Показываем только разрешённые разделы.
+    */
+
+    document
+    .querySelectorAll(".nav button")
+    .forEach(button => {
+
+        const page = button.dataset.page;
+
+        button.style.display =
+            user.pages.includes(page)
+            ? "block"
+            : "none";
+
+    });
+
+
+    /*
+       Для студента убираем возможность
+       создавать/редактировать административные данные.
+    */
+
+    document
+    .querySelectorAll(".admin-only")
+    .forEach(button => {
+
+        button.style.display =
+            role === "admin"
+            ? "inline-block"
+            : "none";
+
+    });
+
+
+    renderDashboard();
+
+    showPage("dashboard");
+
+
+    showMessage(
+        "Вы вошли как: " + user.name
+    );
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function renderDashboard() {
+
+    document.getElementById("statTasks").textContent =
+        data.tasks.length;
+
+
+    document.getElementById("statNotifications").textContent =
+        data.notifications.length;
+
+
+    const list =
+        document.getElementById("dashboardList");
+
+
+    list.innerHTML = "";
+
+
+    if (currentRole === "admin") {
+
+        list.innerHTML += `
+            <div class="item">
+
+                <div>
+
+                    <div class="item-title">
+                        Панель управления
+                    </div>
+
+                    <div class="muted">
+                        Все разделы доступны для управления.
+                    </div>
+
+                </div>
+
+                <span class="badge">
+                    Администратор
+                </span>
+
+            </div>
+        `;
+
+    }
+
+
+    if (currentRole === "teacher") {
+
+        list.innerHTML += `
+            <div class="item">
+
+                <div>
+
+                    <div class="item-title">
+                        Следующая пара
+                    </div>
+
+                    <div class="muted">
+                        Информатика · ИС-21 · кабинет 310
+                    </div>
+
+                </div>
+
+                <span class="badge">
+                    09:00
+                </span>
+
+            </div>
+
+            <div class="item">
+
+                <div>
+
+                    <div class="item-title">
+                        Работы студентов
+                    </div>
+
+                    <div class="muted">
+                        Нужно проверить 12 работ.
+                    </div>
+
+                </div>
+
+                <span class="badge">
+                    Задача
+                </span>
+
+            </div>
+        `;
+
+    }
+
+
+    if (currentRole === "student") {
+
+        list.innerHTML += `
+            <div class="item">
+
+                <div>
+
+                    <div class="item-title">
+                        Следующая пара
+                    </div>
+
+                    <div class="muted">
+                        Информатика · кабинет 310
+                    </div>
+
+                </div>
+21:36
+<span class="badge">
+                    09:00
+                </span>
+
+            </div>
+
+            <div class="item">
+
+                <div>
+
+                    <div class="item-title">
+                        Новый опрос
+                    </div>
+
+                    <div class="muted">
+                        Опрос удовлетворённости.
+                    </div>
+
+                </div>
+
+                <span class="badge">
+                    Новый
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    renderQuickActions();
+
+}
+
+
+function renderQuickActions() {
+
+    const box =
+        document.getElementById("quickActions");
+
+
+    box.innerHTML = "";
+
+
+    if (currentRole === "admin") {
+
+        box.innerHTML = `
+
+            <button
+                class="btn"
+                onclick="addNotification()">
+                + Уведомление
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="addTask()">
+                + Задача
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="addEmployee()">
+                + Сотрудник
+            </button>
+
+        `;
+
+    }
+
+
+    if (currentRole === "teacher") {
+
+        box.innerHTML = `
+
+            <button
+                class="btn"
+                onclick="addTask()">
+                + Моя задача
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="showPage('schedule')">
+                🗓 Моё расписание
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="showPage('groups')">
+                🎓 Мои группы
+            </button>
+
+        `;
+
+    }
+
+
+    if (currentRole === "student") {
+
+        box.innerHTML = `
+
+            <button
+                class="btn"
+                onclick="showPage('schedule')">
+                🗓 Моё расписание
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="showPage('surveys')">
+                📋 Пройти опрос
+            </button>
+
+            <button
+                class="btn secondary"
+                onclick="showPage('certificates')">
+                📄  Заказать справку
+            </button>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   УВЕДОМЛЕНИЯ
+===================================================== */
+
+function renderNotifications() {
+
+    const box =
+        document.getElementById("notificationsList");
+
+
+    box.innerHTML = data.notifications
+    .map(item => `
+
+        <div class="item">
+
+            <div>
+
+                <div class="item-title">
+                    ${item.title}
+                </div>
+
+                <div>
+                    ${item.text}
+                </div>
+
+            </div>
+
+            <span class="badge">
+                ${item.type}
+            </span>
+
+        </div>
+
+    `)
+    .join("");
+
+}
+
+
+/* =====================================================
+   СОТРУДНИКИ
+===================================================== */
+
+function renderEmployees() {
+
+    const box =
+        document.getElementById("employeesList");
+
+
+    box.innerHTML = data.employees
+    .map(employee => `
+
+        <div class="item">
+
+            <div>
+
+                <div class="item-title">
+                    ${employee.name}
+                </div>
+
+                <div>
+                    ${employee.role}
+                </div>
+
+                <div class="muted">
+                    ${employee.subject}
+                    ·
+                    ${employee.office}
+                </div>
+
+            </div>
+
+            <button
+                class="btn small secondary"
+                onclick="showMessage('Открываем карточку сотрудника')">
+                Открыть
+            </button>
+
+        </div>
+
+    `)
+    .join("");
+
+}
+
+
+/* =====================================================
+   ЗАДАЧИ
+21:36
+===================================================== */
+
+function renderTasks() {
+
+    const box =
+        document.getElementById("tasksList");
+
+
+    box.innerHTML = data.tasks
+    .map((task, index) => `
+
+        <div class="item">
+
+            <div>
+
+                <div class="item-title">
+                    ${task.title}
+                </div>
+
+                <div class="muted">
+                    Срок: ${task.deadline}
+                </div>
+
+            </div>
+
+            <span class="badge">
+                ${task.priority}
+            </span>
+
+        </div>
+
+    `)
+    .join("");
+
+}
+
+
+/* =====================================================
+   ГРУППЫ
+===================================================== */
+
+function renderGroups() {
+
+    const box =
+        document.getElementById("groupsList");
+
+
+    box.innerHTML = data.groups
+    .map(group => `
+
+        <div class="item">
+
+            <div>
+
+                <div class="item-title">
+                    ${group.name}
+                </div>
+
+                <div>
+                    Куратор:
+                    ${group.curator}
+                </div>
+
+                <div class="muted">
+                    Староста:
+                    ${group.starosta}
+                    ·
+                    ${group.students}
+                    студентов
+                </div>
+
+            </div>
+
+        </div>
+
+    `)
+    .join("");
+
+}
+
+
+/* =====================================================
+   РАСПИСАНИЕ
+===================================================== */
+
+function renderSchedule() {
+
+    const box =
+        document.getElementById("scheduleList");
+
+
+    box.innerHTML = data.schedule
+    .map(item => `
+
+        <tr>
+
+            <td>
+                ${item.time}
+            </td>
+
+            <td>
+                ${item.subject}
+            </td>
+
+            <td>
+                ${item.teacher}
+            </td>
+
+            <td>
+                ${item.group}
+            </td>
+
+            <td>
+                ${item.room}
+            </td>
+
+        </tr>
+
+    `)
+    .join("");
+
+}
+
+
+/* =====================================================
+   ОПРОСЫ
+===================================================== */
+
+function renderSurveys() {
+
+    const box =
+        document.getElementById("surveysList");
+
+
+    box.innerHTML = data.surveys
+    .map(survey => `
+
+        <div class="item">
+
+            <div>
+
+                <div class="item-title">
+                    ${survey.title}
+                </div>
+
+                <div class="muted">
+                    До ${survey.deadline}
+                </div>
+
+            </div>
+
+            <div>
+
+                <span class="badge">
+                    ${survey.passed}/${survey.total}
+                </span>
+
+                ${
+                    currentRole === "student"
+                    ? `
+                        <button
+                            class="btn small"
+                            onclick="showMessage('Опрос открыт')">
+                            Пройти
+                        </button>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        </div>
+
+    `)
+    .join("");
+
+}
+
+
+/* =====================================================
+   КАЛЕНДАРЬ
+===================================================== */
+
+function renderCalendar() {
+
+    const box =
+        document.getElementById("calendarBox");
+
+
+    let html = "";
+
+
+    for (let day = 1; day <= 30; day++) {
+
+        const event =
+            data.events.find(x => x.day === day);
+
+
+        html += `
+
+            <div class="calendar-day">
+
+                <b>
+                    ${day}
+                </b>
+
+                ${
+                    event
+                    ? `
+                        <div class="calendar-event">
+                            ${event.title}
+                        </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+        `;
+
+    }
+box.innerHTML = html;
+
+}
+
+
+/* =====================================================
+   ДОБАВЛЕНИЕ
+===================================================== */
+
+function addNotification() {
+
+    if (currentRole !== "admin") {
+
+        showMessage(
+            "Создавать общие уведомления может администратор."
+        );
+
+        return;
+
+    }
+
+
+    openModal(
+        "Новое уведомление",
+
+        `
+        <div class="form-grid">
+
+            <div class="form-field">
+
+                <label>
+                    Заголовок
+                </label>
+
+                <input id="newTitle">
+
+            </div>
+
+            <div class="form-field">
+
+                <label>
+                    Тип
+                </label>
+
+                <select id="newType">
+
+                    <option>
+                        Важное
+                    </option>
+
+                    <option>
+                        Встреча
+                    </option>
+
+                    <option>
+                        Обычное
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-field full">
+
+                <label>
+                    Текст
+                </label>
+
+                <textarea id="newText"></textarea>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="saveNotification()">
+            Сохранить
+        </button>
+        `
+    );
+
+}
+
+
+function saveNotification() {
+
+    data.notifications.push({
+
+        title:
+            document.getElementById("newTitle").value
+            || "Новое уведомление",
+
+        text:
+            document.getElementById("newText").value
+            || "Без текста",
+
+        type:
+            document.getElementById("newType").value
+
+    });
+
+
+    renderAll();
+
+    closeModal();
+
+    showMessage(
+        "Уведомление добавлено"
+    );
+
+}
+
+
+function addTask() {
+
+    openModal(
+
+        "Новая задача",
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-field full">
+
+                <label>
+                    Название
+                </label>
+
+                <input id="taskTitle">
+
+            </div>
+
+            <div class="form-field">
+
+                <label>
+                    Приоритет
+                </label>
+
+                <select id="taskPriority">
+
+                    <option>
+                        Низкий
+                    </option>
+
+                    <option selected>
+                        Средний
+                    </option>
+
+                    <option>
+                        Высокий
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="form-field">
+
+                <label>
+                    Срок
+                </label>
+
+                <input
+                    id="taskDeadline"
+                    value="Завтра">
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="saveTask()">
+            Добавить
+        </button>
+
+        `
+    );
+
+}
+
+
+function saveTask() {
+
+    data.tasks.push({
+
+        title:
+            document.getElementById("taskTitle").value
+            || "Новая задача",
+
+        priority:
+            document.getElementById("taskPriority").value,
+
+        deadline:
+            document.getElementById("taskDeadline").value
+            || "Не указан"
+
+    });
+
+
+    renderAll();
+
+    closeModal();
+
+    showMessage(
+        "Задача добавлена"
+    );
+
+}
+
+
+function addEmployee() {
+
+    if (currentRole !== "admin") return;
+
+
+    openModal(
+
+        "Новый сотрудник",
+
+        `
+
+        <div class="form-grid">
+
+            <div class="form-field">
+
+                <label>
+                    ФИО
+                </label>
+
+                <input id="employeeName">
+
+            </div>
+
+            <div class="form-field">
+
+                <label>
+                    Должность
+                </label>
+
+                <input id="employeeRole">
+21:36
+</div>
+
+            <div class="form-field">
+
+                <label>
+                    Предмет
+                </label>
+
+                <input id="employeeSubject">
+
+            </div>
+
+            <div class="form-field">
+
+                <label>
+                    Кабинет
+                </label>
+
+                <input id="employeeOffice">
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="saveEmployee()">
+            Добавить
+        </button>
+
+        `
+    );
+
+}
+
+
+function saveEmployee() {
+
+    data.employees.push({
+
+        name:
+            document.getElementById("employeeName").value
+            || "Новый сотрудник",
+
+        role:
+            document.getElementById("employeeRole").value
+            || "Сотрудник",
+
+        subject:
+            document.getElementById("employeeSubject").value
+            || "Не указан",
+
+        office:
+            document.getElementById("employeeOffice").value
+            || "Не указан"
+
+    });
+
+
+    renderAll();
+
+    closeModal();
+
+    showMessage(
+        "Сотрудник добавлен"
+    );
+
+}
+
+
+/* =====================================================
+   АККАУНТ
+===================================================== */
+
+function openProfile() {
+
+    const user =
+        roles[currentRole];
+
+
+    openModal(
+
+        "Мой аккаунт",
+
+        `
+
+        <div class="card">
+
+            <h2>
+                ${user.person}
+            </h2>
+
+            <p>
+                <span class="badge">
+                    ${user.name}
+                </span>
+            </p>
+
+            <p class="muted">
+                Это демонстрационный аккаунт.
+            </p>
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="closeModal()">
+            Закрыть
+        </button>
+
+        `
+    );
+
+}
+
+
+/* =====================================================
+   НАСТРОЙКИ
+===================================================== */
+
+function saveSettings() {
+
+    const name =
+        document.getElementById("collegeName").value;
+
+
+    document.title =
+        name || "Цифровой колледж";
+
+
+    showMessage(
+        "Настройки сохранены"
+    );
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function openModal(title, content) {
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent = title;
+
+
+    document.getElementById(
+        "modalContent"
+    ).innerHTML = content;
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add("show");
+
+}
+
+
+function closeModal() {
+
+    document.getElementById(
+        "modal"
+    ).classList.remove("show");
+
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+function toggleDarkMode() {
+
+    document.body.classList.toggle("dark");
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+function toggleSidebar() {
+
+    document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(text) {
+
+    alert(text);
+
+}
+
+
+/* =====================================================
+   RENDER ALL
+===================================================== */
+
+function renderAll() {
+
+    renderDashboard();
+
+    renderNotifications();
+
+    renderEmployees();
+
+    renderTasks();
+
+    renderGroups();
+
+    renderSchedule();
+
+    renderSurveys();
+
+    renderCalendar();
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderAll();
+
+changeRole("admin");
+
 </script>
+
 </body>
 </html>
