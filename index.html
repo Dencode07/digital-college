@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Цифровой колледж</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6d7688;
+  --line:#e5e9f0;--accent:#315efb;--accent2:#eef2ff;
+  --danger:#e5484d;--warning:#e7a21a;--success:#22945a;
+  --shadow:0 8px 25px rgba(30,45,80,.07)
+}
+body.dark{--bg:#11151d;--card:#1a202b;--text:#f1f4fa;--muted:#9aa5b7;--line:#303846;--accent2:#252d48}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.app{display:flex;min-height:100vh}
+.sidebar{width:255px;background:var(--card);border-right:1px solid var(--line);padding:18px;position:fixed;left:0;top:0;bottom:0;overflow:auto}
+.logo{font-size:20px;font-weight:800;margin:5px 8px 22px}
+.logo span{color:var(--accent)}
+.nav button{width:100%;text-align:left;padding:11px 12px;margin:3px 0;border-radius:10px;background:transparent;color:var(--text)}
+.nav button:hover,.nav button.active{background:var(--accent2);color:var(--accent)}
+.user-mini{border-top:1px solid var(--line);margin-top:18px;padding:15px 8px;color:var(--muted);font-size:13px}
+.main{margin-left:255px;width:calc(100% - 255px);padding:24px;max-width:1500px}
+.top{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:22px}
+.search{width:min(480px,100%);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--text)}
+.actions{display:flex;gap:8px;align-items:center}
+.btn{padding:10px 14px;border-radius:10px;background:var(--accent);color:white;font-weight:600}
+.btn.secondary{background:var(--card);border:1px solid var(--line);color:var(--text)}
+.btn.danger{background:var(--danger)}
+.btn.small{padding:7px 10px;font-size:13px}
+h1{margin:0 0 5px;font-size:27px} h2{margin-top:0} h3{margin:0 0 8px}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}
+.stat strong{font-size:28px;display:block;margin-top:8px}
+.section{display:none}.section.active{display:block}
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:15px;margin-top:15px}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{padding:13px;border:1px solid var(--line);border-radius:11px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:var(--accent2);color:var(--accent);font-size:12px}
+.priority{border-left:4px solid var(--danger)}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);font-size:14px}
+.modal-wrap{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:15px;z-index:10}
+.modal{background:var(--card);width:min(600px,100%);max-height:90vh;overflow:auto;border-radius:16px;padding:20px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}
+.field input,.field select,.field textarea{padding:11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text)}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+.toast{position:fixed;right:20px;bottom:20px;background:#202633;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:20}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{min-height:85px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px}.day b{font-size:12px}.event{font-size:11px;background:var(--accent2);color:var(--accent);padding:4px;border-radius:5px;margin-top:5px}
+.mobile-menu{display:none}
+@media(max-width:900px){
+ .sidebar{display:none}.sidebar.open{display:block;z-index:15;width:270px}.main{margin-left:0;width:100%;padding:15px}
+ .mobile-menu{display:block}.grid{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.top{align-items:flex-start}.form-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.actions .hide-mobile{display:none}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="logo">Цифровой <span>колледж</span></div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard">🏠 Главная</button>
+    <button data-page="notifications">🔔 Уведомления</button>
+    <button data-page="employees">👥 Сотрудники</button>
+    <button data-page="tasks">✅ Задачи</button>
+    <button data-page="groups">🎓 Группы</button>
+    <button data-page="calendar">📅 Календарь</button>
+    <button data-page="schedule">🗓 Расписание</button>
+    <button data-page="surveys">📋 Опросы</button>
+    <button data-page="statistics">📊 Статистика</button>
+    <button data-page="certificates">📄 Справки</button>
+    <button data-page="settings">⚙️ Настройки</button>
+  </nav>
+  <div class="user-mini">
+    <b id="sideUser">Администратор</b><br>
+    <span id="sideRole">Администратор</span>
+  </div>
+</aside>
+
+<main class="main">
+<header class="top">
+  <div>
+    <button class="btn secondary mobile-menu" onclick="toggleSidebar()">☰</button>
+    <h1 id="pageTitle">Главная</h1>
+    <div class="muted" id="welcome">Рабочее пространство колледжа</div>
+  </div>
+  <div class="actions">
+    <input class="search" id="globalSearch" placeholder="Поиск по системе...">
+    <button class="btn secondary hide-mobile" onclick="toggleDark()">◐</button>
+    <button class="btn" onclick="openAccount()">Аккаунт</button>
+  </div>
+</header>
+
+<section id="dashboard" class="section active">
+  <div class="grid">
+    <div class="card stat"><span class="muted">Активные задачи</span><strong id="sTasks">0</strong></div>
+    <div class="card stat"><span class="muted">Уведомления</span><strong id="sNotices">0</strong></div>
+    <div class="card stat"><span class="muted">Сотрудники</span><strong id="sEmployees">0</strong></div>
+    <div class="card stat"><span class="muted">Заявки на справки</span><strong id="sRequests">0</strong></div>
+  </div>
+  <div class="two">
+    <div class="card"><h2>Что происходит</h2><div id="dashboardFeed" class="list"></div></div>
+    <div class="card"><h2>Быстрые действия</h2>
+      <div class="list">
+        <button class="btn" onclick="openModal('notice')">+ Создать уведомление</button>
+        <button class="btn secondary" onclick="openModal('task')">+ Добавить задачу</button>
+        <button class="btn secondary" onclick="openModal('employee')">+ Добавить сотрудника</button>
+        <button class="btn secondary" onclick="openModal('event')">+ Добавить мероприятие</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="notifications" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Уведомления</h2><span class="muted">Здесь можно менять текст, получателей и тип сообщения.</span></div><button class="btn" onclick="openModal('notice')">+ Добавить</button></div><div id="noticeList" class="list" style="margin-top:15px"></div></div>
+</section>
+
+<section id="employees" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Сотрудники</h2><span class="muted">Карточки сотрудников можно редактировать.</span></div><button class="btn" onclick="openModal('employee')">+ Сотрудник</button></div><div id="employeeList" class="list" style="margin-top:15px"></div></div>
+</section>
+
+<section id="tasks" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Задачи</h2><span class="muted">Приоритет, срок и напоминание задаются вручную.</span></div><button class="btn" onclick="openModal('task')">+ Задача</button></div><div id="taskList" class="list" style="margin-top:15px"></div></div>
+</section>
+
+<section id="groups" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Карточки групп</h2><span class="muted">Состав группы и роли можно менять.</span></div><button class="btn" onclick="openModal('group')">+ Группа</button></div><div id="groupList" class="list" style="margin-top:15px"></div></div>
+</section>
+
+<section id="calendar" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Календарь мероприятий</h2><span class="muted">Добавляйте и удаляйте события под свои правила.</span></div><button class="btn" onclick="openModal('event')">+ Мероприятие</button></div><div id="calendarBox" style="margin-top:15px"></div></div>
+</section>
+
+<section id="schedule" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Общее расписание</h2><span class="muted">Расписание — обычные данные, их можно редактировать.</span></div><button class="btn" onclick="openModal('lesson')">+ Пара</button></div><div id="scheduleList" style="margin-top:15px"></div></div>
+</section>
+
+<section id="surveys" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Опросы</h2><span class="muted">Статус прохождения и напоминания.</span></div><button class="btn" onclick="openModal('survey')">+ Опрос</button></div><div id="surveyList" class="list" style="margin-top:15px"></div></div>
+</section>
+
+<section id="statistics" class="section">
+ <div class="card"><div class="actions" style="justify-content:space-between"><div><h2>Статистика болеющих</h2><span class="muted">Значения можно менять каждый день.</span></div><button class="btn" onclick="openModal('stats')">Изменить</button></div><div id="statsBox" style="margin-top:15px"></div></div>
+</section>
+
+<section id="certificates" class="section">
+ <div class="card"><h2>Заявки на справки</h2><p class="muted">Ссылки на формы также можно заменить в настройках.</p>
+ <div class="grid">
+   <button class="card" onclick="openLink('study')"><h3>📄 Справка об обучении</h3><span class="muted">Открыть форму</span></button>
+   <button class="card" onclick="openLink('stipend')"><h3>💳 Справка о стипендии</h3><span class="muted">Открыть форму</span></button>
+ </div></div>
+</section>
+
+<section id="settings" class="section">
+ <div class="card"><h2>Настройки системы</h2><p class="muted">Главная идея этого прототипа — ничего не зашивать намертво. Основные данные хранятся в браузере и могут быть изменены.</p>
+ <div class="form-grid">
+  <div class="field"><label>Название колледжа</label><input id="setCollege"></div>
+  <div class="field"><label>Имя администратора</label><input id="setAdmin"></div>
+  <div class="field full"><label>Ссылка на справку об обучении</label><input id="setStudy"></div>
+  <div class="field full"><label>Ссылка на справку о стипендии</label><input id="setStipend"></div>
+ </div>
+ <div style="margin-top:15px" class="actions"><button class="btn" onclick="saveSettings()">Сохранить изменения</button><button class="btn danger" onclick="resetData()">Сбросить демо-данные</button></div>
+ </div>
+</section>
+</main>
+</div>
+
+<div class="modal-wrap" id="modal">
+ <div class="modal">
+  <div class="modal-head"><h2 id="modalTitle">Добавить</h2><button class="btn secondary" onclick="closeModal()">✕</button></div>
+  <form id="modalForm"></form>
+ </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='collegeAppDataV2';
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ college:'Цифровой колледж',
+ admin:{name:'Администратор',role:'Администратор'},
+ notices:[
+  {id:1,title:'Важная информация',text:'Завтра изменяется время первой пары.',type:'Важное',date:'23.09.2026'},
+  {id:2,title:'Собрание',text:'Совещание кураторов в 15:00.',type:'Встреча',date:'23.09.2026'}
+ ],
+ employees:[
+  {id:1,name:'Анна Петрова',role:'Методист',subject:'Организация учебного процесса',contact:'anna@example.ru',office:'Кабинет 204'},
+  {id:2,name:'Иван Смирнов',role:'Преподаватель',subject:'Информатика',contact:'ivan@example.ru',office:'Кабинет 310'}
+ ],
+ tasks:[
+  {id:1,title:'Подготовить отчёт',priority:'Высокий',due:'30.09.2026',reminder:'За день'},
+  {id:2,title:'Провести собрание',priority:'Средний',due:'25.09.2026',reminder:'За 15 минут'}
+ ],
+ groups:[{id:1,name:'ИС-21',curator:'Анна Петрова',starosta:'Максим Иванов',deputy:'Ольга Соколова',committee:'Учебный сектор'}],
+ events:[{id:1,title:'День открытых дверей',date:'2026-09-28',category:'Колледж',participants:'Абитуриенты, сотрудники'}],
+ lessons:[
+  {id:1,date:'23.09.2026',time:'09:00',subject:'Информатика',teacher:'Иван Смирнов',group:'ИС-21',room:'310'},
+  {id:2,date:'23.09.2026',time:'10:45',subject:'Математика',teacher:'Елена Орлова',group:'ИС-21',room:'205'}
+ ],
+ surveys:[{id:1,title:'Опрос удовлетворённости',deadline:'27.09.2026',passed:18,total:25}],
+ stats:{date:'23.09.2026',arvi:39,pneumonia:0,covid:0},
+ links:{study:'#',stipend:'#'}
+};
+save();
+
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function $(id){return document.getElementById(id)}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function toast(t){$('toast').textContent=t;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200)}
+function render(){
+ $('sideUser').textContent=data.admin.name;$('sideRole').textContent=data.admin.role;
+ $('welcome').textContent=data.college+' · '+data.admin.role;
+ $('sTasks').textContent=data.tasks.length;$('sNotices').textContent=data.notices.length;$('sEmployees').textContent=data.employees.length;
+ $('sRequests').textContent='2';
+ renderNotices();renderEmployees();renderTasks();renderGroups();renderCalendar();renderSchedule();renderSurveys();renderStats();renderFeed();fillSettings()
+}
+function renderFeed(){
+ $('dashboardFeed').innerHTML=data.notices.slice(0,4).map(n=>`<div class="item"><div><b>${esc(n.title)}</b><div class="muted">${esc(n.text)}</div></div><span class="badge">${esc(n.type)}</span></div>`).join('')||'<div class="empty">Пока ничего нет</div>'
+}
+function renderNotices(){
+ $('noticeList').innerHTML=data.notices.map(n=>`<div class="item"><div><b>${esc(n.title)}</b><div>${esc(n.text)}</div><small class="muted">${esc(n.type)} · ${esc(n.date)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('notice',${n.id})">Изменить</button><button class="btn small danger" onclick="del('notices',${n.id})">Удалить</button></div></div>`).join('')||'<div class="empty">Нет уведомлений</div>'
+}
+function renderEmployees(){
+ $('employeeList').innerHTML=data.employees.map(e=>`<div class="item"><div><b>${esc(e.name)}</b><div>${esc(e.role)} · ${esc(e.subject)}</div><small class="muted">${esc(e.contact)} · ${esc(e.office)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('employee',${e.id})">Изменить</button><button class="btn small danger" onclick="del('employees',${e.id})">Удалить</button></div></div>`).join('')
+}
+function renderTasks(){
+ $('taskList').innerHTML=data.tasks.map(t=>`<div class="item ${t.priority==='Высокий'?'priority':''}"><div><b>${esc(t.title)}</b><div><span class="badge">${esc(t.priority)}</span> · до ${esc(t.due)}</div><small class="muted">Напоминание: ${esc(t.reminder)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('task',${t.id})">Изменить</button><button class="btn small danger" onclick="del('tasks',${t.id})">Удалить</button></div></div>`).join('')
+}
+function renderGroups(){
+ $('groupList').innerHTML=data.groups.map(g=>`<div class="item"><div><h3>${esc(g.name)}</h3><div>Куратор: ${esc(g.curator)}</div><div>Староста: ${esc(g.starosta)} · Зам.: ${esc(g.deputy)}</div><small class="muted">${esc(g.committee)}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('group',${g.id})">Изменить</button><button class="btn small danger" onclick="del('groups',${g.id})">Удалить</button></div></div>`).join('')
+}
+function renderCalendar(){
+ let days=Array.from({length:30},(_,i)=>i+1);
+ $('calendarBox').innerHTML='<div class="calendar">'+days.map(d=>{let date=`2026-09-${String(d).padStart(2,'0')}`;let ev=data.events.filter(e=>e.date===date);return `<div class="day"><b>${d}</b>${ev.map(e=>`<div class="event" onclick="editItem('event',${e.id})">${esc(e.title)}</div>`).join('')}</div>`}).join('')+'</div>'
+}
+function renderSchedule(){
+ $('scheduleList').innerHTML='<table><thead><tr><th>Дата</th><th>Время</th><th>Предмет</th><th>Преподаватель</th><th>Группа</th><th>Кабинет</th><th></th></tr></thead><tbody>'+
+ data.lessons.map(l=>`<tr><td>${esc(l.date)}</td><td>${esc(l.time)}</td><td>${esc(l.subject)}</td><td>${esc(l.teacher)}</td><td>${esc(l.group)}</td><td>${esc(l.room)}</td><td><button class="btn small secondary" onclick="editItem('lesson',${l.id})">Изм.</button> <button class="btn small danger" onclick="del('lessons',${l.id})">×</button></td></tr>`).join('')+'</tbody></table>'
+}
+function renderSurveys(){
+ $('surveyList').innerHTML=data.surveys.map(s=>`<div class="item"><div><b>${esc(s.title)}</b><div>Срок: ${esc(s.deadline)}</div><small class="muted">Прошли: ${s.passed} из ${s.total}</small></div><div class="actions"><button class="btn small secondary" onclick="editItem('survey',${s.id})">Изменить</button><button class="btn small danger" onclick="del('surveys',${s.id})">Удалить</button></div></div>`).join('')
+}
+function renderStats(){
+ let total=+data.stats.arvi + +data.stats.pneumonia + +data.stats.covid;
+ $('statsBox').innerHTML=`<div class="grid"><div class="card"><span class="muted">Дата</span><strong>${esc(data.stats.date)}</strong></div><div class="card"><span class="muted">ОРВИ</span><strong>${data.stats.arvi}</strong></div><div class="card"><span class="muted">Пневмония</span><strong>${data.stats.pneumonia}</strong></div><div class="card"><span class="muted">COVID-19</span><strong>${data.stats.covid}</strong></div></div><div class="card" style="margin-top:15px"><b>Всего: ${total}</b></div>`
+}
+function fillSettings(){
+ $('setCollege').value=data.college;$('setAdmin').value=data.admin.name;$('setStudy').value=data.links.study;$('setStipend').value=data.links.stipend
+}
+const titles={dashboard:'Главная',notifications:'Уведомления',employees:'Сотрудники',tasks:'Задачи',groups:'Группы',calendar:'Календарь',schedule:'Расписание',surveys:'Опросы',statistics:'Статистика',certificates:'Справки',settings:'Настройки'};
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+function showPage(p){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$(p).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));$('pageTitle').textContent=titles[p];$('sidebar').classList.remove('open')}
+function toggleSidebar(){$('sidebar').classList.toggle('open')}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('dark',document.body.classList.contains('dark'))}
+if(localStorage.getItem('dark')==='true')document.body.classList.add('dark');
+
+const fields={
+notice:{title:'Новое уведомление',arr:'notices',labels:{title:'Заголовок',text:'Текст',type:'Тип',date:'Дата'},inputs:{title:'text',text:'textarea',type:'text',date:'text'}},
+employee:{title:'Сотрудник',arr:'employees',labels:{name:'ФИО',role:'Должность',subject:'Предмет / направление',contact:'Контакт',office:'Кабинет'},inputs:{name:'text',role:'text',subject:'text',contact:'text',office:'text'}},
+task:{title:'Задача',arr:'tasks',labels:{title:'Название',priority:'Приоритет',due:'Срок',reminder:'Напоминание'},inputs:{title:'text',priority:'select:Низкий|Средний|Высокий|Срочный',due:'text',reminder:'text'}},
+group:{title:'Группа',arr:'groups',labels:{name:'Название группы',curator:'Куратор',starosta:'Староста',deputy:'Заместитель',committee:'Актив / комитеты'},inputs:{name:'text',curator:'text',starosta:'text',deputy:'text',committee:'text'}},
+event:{title:'Мероприятие',arr:'events',labels:{title:'Название',date:'Дата',category:'Категория',participants:'Участники'},inputs:{title:'text',date:'date',category:'text',participants:'text'}},
+lesson:{title:'Занятие',arr:'lessons',labels:{date:'Дата',time:'Время',subject:'Предмет',teacher:'Преподаватель',group:'Группа',room:'Кабинет'},inputs:{date:'text',time:'text',subject:'text',teacher:'text',group:'text',room:'text'}},
+survey:{title:'Опрос',arr:'surveys',labels:{title:'Название',deadline:'Срок',passed:'Прошли',total:'Всего'},inputs:{title:'text',deadline:'text',passed:'number',total:'number'}},
+stats:{title:'Статистика',special:'stats',labels:{date:'Дата',arvi:'ОРВИ',pneumonia:'Пневмония',covid:'COVID-19'},inputs:{date:'text',arvi:'number',pneumonia:'number',covid:'number'}}
+};
+let editState=null;
+function openModal(type,id=null){
+ editState={type,id};
+ let f=fields[type];$('modalTitle').textContent=id?'Изменить':'Добавить';
+ if(f.special==='stats') editState.obj=data.stats;
+ else editState.obj=id?data[f.arr].find(x=>x.id===id):{};
+ let html='<div class="form-grid">';
+ Object.keys(f.labels).forEach(k=>{
+  let val=editState.obj[k]??'';
+  let inp=f.inputs[k];
+  html+=`<div class="field ${inp==='textarea'?'full':''}"><label>${f.labels[k]}</label>`;
+  if(inp==='textarea')html+=`<textarea name="${k}" rows="5">${esc(val)}</textarea>`;
+  else if(inp.startsWith('select:'))html+=`<select name="${k}">${inp.slice(7).split('|').map(x=>`<option ${x===val?'selected':''}>${x}</option>`).join('')}</select>`;
+  else html+=`<input name="${k}" type="${inp}" value="${esc(val)}">`;
+  html+='</div>';
+ });
+ html+=`</div><div style="margin-top:15px;text-align:right"><button type="button" class="btn secondary" onclick="closeModal()">Отмена</button> <button class="btn">Сохранить</button></div>`;
+ $('modalForm').innerHTML=html;$('modal').style.display='flex';
+ $('modalForm').onsubmit=e=>{e.preventDefault();saveModal(type)}
+}
+function saveModal(type){
+ let f=fields[type], obj=editState.obj, fd=new FormData($('modalForm'));
+ Object.keys(f.labels).forEach(k=>obj[k]=fd.get(k));
+ if(type==='stats'){data.stats=obj}else{
+  if(!editState.id){obj.id=Date.now();data[f.arr].push(obj)}
+ }
+ save();render();closeModal();toast('Изменения сохранены');
+}
+function closeModal(){$('modal').style.display='none'}
+function editItem(type,id){openModal(type,id)}
+function del(arr,id){if(confirm('Удалить эту запись?')){data[arr]=data[arr].filter(x=>x.id!==id);save();render();toast('Удалено')}}
+function openAccount(){
+ editState={type:'account',id:null,obj:{name:data.admin.name,role:data.admin.role}};
+ $('modalTitle').textContent='Мой аккаунт';
+ $('modalForm').innerHTML=`<div class="form-grid">
+ <div class="field"><label>Имя</label><input name="name" value="${esc(data.admin.name)}"></div>
+ <div class="field"><label>Роль</label><input name="role" value="${esc(data.admin.role)}"></div>
+ </div><div style="margin-top:15px;text-align:right"><button type="button" class="btn secondary" onclick="closeModal()">Отмена</button> <button class="btn">Сохранить</button></div>`;
+ $('modal').style.display='flex';
+ $('modalForm').onsubmit=e=>{e.preventDefault();let fd=new FormData($('modalForm'));data.admin.name=fd.get('name')||'Администратор';data.admin.role=fd.get('role')||'Администратор';save();render();closeModal();toast('Аккаунт обновлён')};
+}
+function saveSettings(){
+ data.college=$('setCollege').value.trim()||'Цифровой колледж';data.admin.name=$('setAdmin').value.trim()||'Администратор';data.links.study=$('setStudy').value.trim()||'#';data.links.stipend=$('setStipend').value.trim()||'#';save();render();toast('Настройки сохранены')
+}
+function openLink(type){let u=data.links[type];if(u&&u!=='#')window.open(u,'_blank');else toast('Сначала укажите ссылку в настройках')}
+function resetData(){if(confirm('Вернуть исходные демонстрационные данные?')){localStorage.removeItem(KEY);location.reload()}}
+$('globalSearch').addEventListener('input',e=>{
+ let q=e.target.value.toLowerCase().trim();if(!q)return;
+ let all=[...data.employees.map(x=>x.name+' '+x.role),...data.tasks.map(x=>x.title),...data.notices.map(x=>x.title+' '+x.text)];
+ let found=all.filter(x=>x.toLowerCase().includes(q)).length;toast(found?`Найдено совпадений: ${found}`:'Ничего не найдено')
+});
+
+render();
+</script>
+</body>
+</html>
